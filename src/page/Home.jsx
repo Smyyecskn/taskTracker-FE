@@ -10,8 +10,12 @@ const Home = () => {
   const [task, setTask] = useState([]);
 
   const getTask = async () => {
-    const { data } = await axios.get(process.env.REACT_APP_BASE_URL);
-    setTask(data);
+    try {
+      const { data } = await axios.get(process.env.REACT_APP_BASE_URL);
+      setTask(data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -20,13 +24,7 @@ const Home = () => {
 
   const handleClick = () => {
     setShow(!show);
-    // if (show) {
-    //   setText("Show Task Bar");
-    // } else {
-    //   setText("Hide Task Bar");
-    // }
-
-    show ? setText("Show Task Bar") : setText("Hide Task Bar");
+    setText(show ? "Show Task Bar" : "Hide Task Bar");
   };
 
   return (
@@ -35,7 +33,7 @@ const Home = () => {
         <Button onClick={handleClick}>{text}</Button>
       </div>
 
-      {show && <AddTask />}
+      {show && <AddTask getTask={getTask} />}
       <TaskList task={task} getTask={getTask} />
     </div>
   );

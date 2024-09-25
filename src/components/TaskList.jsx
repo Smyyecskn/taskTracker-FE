@@ -1,6 +1,17 @@
+import axios from "axios";
 import { HiArchiveBoxArrowDown } from "react-icons/hi2";
 
-const TaskList = ({ task }) => {
+const TaskList = ({ task, getTask }) => {
+  const deleteTask = async (id) => {
+    // console.log(id);
+    try {
+      await axios.delete(`${process.env.REACT_APP_BASE_URL}/${id}`);
+    } catch (error) {
+      console.log(error);
+    }
+    getTask();
+  };
+
   return (
     <div>
       {task.map(({ id, task, date }) => (
@@ -14,7 +25,7 @@ const TaskList = ({ task }) => {
           </div>
           <div>
             <HiArchiveBoxArrowDown
-              // onClick={() => deleteTask(id)}
+              onClick={() => deleteTask(id)}
               style={{
                 cursor: "pointer",
                 marginRight: "30px",
